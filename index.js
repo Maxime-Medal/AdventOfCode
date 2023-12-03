@@ -7,9 +7,15 @@ const lines1 = getInputForDay(1);
 
 let result = 0;
 
-for (let index = 0; index < lines1.length; index++) {
-    const element = array[index];
+// console.log(lines1);
 
-}
-
-
+lines1.forEach(s => {
+    s = s.replace(/\D/g, '');
+    let numInString = '';
+    numInString += s.charAt(0);
+    numInString += s.charAt(s.length - 1);
+    // console.log("start", s.charAt(0));
+    // console.log("end", s.charAt(s.length - 1));
+    result += parseInt(numInString);
+});
+console.log(result);
