@@ -1,3 +1,4 @@
+const fs = require('fs')
 // For example, the record of a few games might look like this:
 
 // Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -13,9 +14,8 @@
 
 // Determine which games would have been possible if the bag had been loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes. What is the sum of the IDs of those games?
 
-const fs = require('fs')
 
-getInputForDay = (day) => fs.readFileSync(`./day${day}.txt`, "utf-8").trim().split('\n');
+const getInputForDay = (day) => fs.readFileSync(`./day${day}.txt`, "utf-8").trim().split('\n');
 
 const lines = getInputForDay(0);
 
@@ -25,11 +25,31 @@ const blue = 14;
 
 let result = 0;
 
+// class Game {
+//   name: number;
+//   tirages: Tirage[]; // Rouge Vert Bleu
+
+//   constructor(name: number) {
+//     this.name = name;
+//     this.tirages = [];
+//   }
+// }
+
+// class Tirage {
+//   vert = 0;
+//   bleu = 0;
+//   rouge = 0;
+// }
 // console.log(lines1);
 
 lines.forEach(s => {
-    s = s.split(',', ':', ';')
-    console.log(s);
+  let game = s.split(';')
+  console.log(game);
+  for (let i = 0; i < game.length; i++) {
+
+    const element = game[i].split(" ");
+    console.log("->", element);
+  }
 });
 
 console.log("result", result);
