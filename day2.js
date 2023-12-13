@@ -17,40 +17,99 @@ const fs = require('fs')
 
 const getInputForDay = (day) => fs.readFileSync(`./day${day}.txt`, "utf-8").trim().split('\n');
 
-const lines = getInputForDay(0);
+const lines = getInputForDay(2);
 
-const red = 12;
-const green = 13;
-const blue = 14;
+const maxRed = 12;
+const maxGreen = 13;
+const maxBlue = 14;
+
+let red = 0;
+let green = 0;
+let blue = 0;
 
 let result = 0;
 
-// class Game {
-//   name: number;
-//   tirages: Tirage[]; // Rouge Vert Bleu
+const extractInt = (string) => {
+  const regex = /[\D]/g;
+  return parseInt(string.replace(regex, ''));
+}
 
-//   constructor(name: number) {
-//     this.name = name;
-//     this.tirages = [];
-//   }
-// }
+// premiere boucle pour extraire le N° du game et le set
+for (let a = 0; a < lines.length; a++) {
+  let game = lines[a].split(':')
+  let gameNum = extractInt(game[0]);
+  let gameSet = game[1].split(";");
 
-// class Tirage {
-//   vert = 0;
-//   bleu = 0;
-//   rouge = 0;
-// }
-// console.log(lines1);
+  // boucle sur le set [ ' 1 blue, 2 green', ' 3 green, 4 blue, 1 red', ' 1 green, 1 blue' ]
+  for (let i = 0; i < gameSet.length; i++) {
+    const ga = gameSet[i].split(',');
 
-lines.forEach(s => {
-  let game = s.split(';')
-  console.log(game);
-  for (let i = 0; i < game.length; i++) {
-
-    const element = game[i].split(" ");
-    console.log("->", element);
+    for (let g = 0; g < ga.length; g++) {
+      const color = ga[g];
+      // console.log("color", color);
+      if (color.includes("blue")) {
+        blue += extractInt(color);
+      }
+      if (color.includes("green")) {
+        green += extractInt(color);
+      }
+      if (color.includes("red")) {
+        red += extractInt(color);
+      }
+    };
   }
-});
+
+  if (!(blue > maxBlue || green > maxGreen || red > maxRed)) {
+    result += gameNum
+  }
+  blue = 0
+  green = 0
+  red = 0
+
+};
 
 console.log("result", result);
 
+
+// function possibleGames(data, red, green, blue) {
+//   const possibleGames = [];
+
+//   for (let i = 0; i < data.length; i++) {
+//     const gameData = data[i].split(';');
+//     let redCount = 0;
+//     let greenCount = 0;
+//     let blueCount = 0;
+
+//     for (const subset of gameData) {
+//       const colors = subset.split(', ');
+//       for (const color of colors) {
+//         const count = parseInt(color.split(' ')[0]);
+//         const type = color.split(' ')[1];
+
+//         if (type === 'red') {
+//           redCount += count;
+//         } else if (type === 'green') {
+//           greenCount += count;
+//         } else if (type === 'blue') {
+//           blueCount += count;
+//         }
+//       }
+//     }
+
+//     if (!(redCount > red || greenCount > green || blueCount > blue)) {
+//       possibleGames.push(i + 1); // Adding 1 because the game IDs start from 1
+//     }
+//   }
+
+//   return possibleGames;
+// }
+
+// const inputData = [
+//   "Game 1: 4 red, 3 blue; 6 blue, 16 green; 9 blue, 13 green, 1 red; 10 green, 4 red, 6 blue",
+//   // ... (rest of the game data)
+//   "Game 100: 7 blue, 6 red, 5 green; 3 blue, 13 green, 11 red; 6 red, 13 green, 14 blue; 8 red, 10 blue, 15 green"
+// ];
+
+// const result1 = possibleGames(lines, 12, 13, 14);
+// console.log("Possible Games:", result);
+// console.log("Sum of IDs:", result1.reduce((sum, id) => sum + id, 0));
